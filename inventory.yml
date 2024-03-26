@@ -1,0 +1,8 @@
+all:
+  hosts:
+    ovh_manager:
+      ansible_host: vps-c87e92b2.vps.ovh.net
+      ansible_user: debian
+      ansible_port: 2209
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+      ansible_python_interpreter: /usr/bin/python3

@@ -1,0 +1,22 @@
+on:
+  workflow_dispatch:
+    inputs:
+      playbook-file:
+        description: Name of the playbook to run
+        type: string
+        required: true
+        default: default.yml
+        options:
+          - default.yml
+
+
+jobs:
+  run-playbook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ansible
+        run: |
+          ansible --version
+          ansible-galaxy install -r requirements.yml --force
