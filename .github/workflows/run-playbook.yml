@@ -1,13 +1,18 @@
+name: Run a given playbook against the target hosts
+
 on:
   workflow_dispatch:
     inputs:
       playbook-file:
         description: Name of the playbook to run
-        type: string
         required: true
         default: default.yml
         options:
           - default.yml
+          - todo.yml
+      target:
+        description: The target host to run the playbook against from the inventory file
+        required: true
 
 
 jobs:
