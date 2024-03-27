@@ -5,7 +5,7 @@ roles:
     version: v4.0.8
 
   - src: geerlingguy.security # https://github.com/geerlingguy/ansible-role-security
-    version: 2.0.1
+    version: 2.3.0
 
   - src: nickjj.docker # https://github.com/nickjj/ansible-docker
     version: v2.4.0
