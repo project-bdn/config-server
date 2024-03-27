@@ -8,7 +8,7 @@ on:
         required: true
         default: default.yml
         options:
-          - default.yml
+          - base.yml
           - todo.yml
       target:
         description: The target host to run the playbook against from the inventory file
@@ -21,7 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Ansible
+      - name: Setup Ansible and SSH
         run: |
           ansible --version
           ansible-galaxy install -r requirements.yml --force
+          echo "TODO: setup ssh related stuff"

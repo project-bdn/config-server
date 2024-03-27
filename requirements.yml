@@ -2,7 +2,7 @@
 roles:
   - src: https://github.com/Oefenweb/ansible-fail2ban
     name: fail2ban
-    version: v3.5.1
+    version: v4.0.8
 
   - src: geerlingguy.security # https://github.com/geerlingguy/ansible-role-security
     version: 2.0.1

@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: fail2ban # https://github.com/Oefenweb/ansible-fail2ban
+      fail2ban_bantime: 86400 # 24h
+      fail2ban_maxretry: 4
+      fail2ban_dbpurgeage: 172800 # 2j
+      fail2ban_findtime: 300 # 5mn
+      fail2ban_backend: systemd
+      fail2ban_ignoreips:
+        - 127.0.0.1/8 # localhost related
+      fail2ban_services:
+        - name: sshd
+          enabled: true
+          port: "{{ ansible_port }}"
+          maxretry: 3
+          bantime: 7200 # 2h
+  tasks:
+    - name: Make sure fail2ban service is really running
+      command: systemctl is-active fail2ban
+      changed_when: false
