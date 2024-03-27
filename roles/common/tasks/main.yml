@@ -1,0 +1,23 @@
+---
+- name: Install some packages and dependencies
+  apt:
+    name: "{{packages}}"
+    state: present
+    cache_valid_time: 2592000 # 30 jours
+  tags:
+    - packages
+
+- name: Configuration des locales
+  import_tasks: locale.yml
+  tags:
+    - locale
+
+- name: Activation de ntp au démarrage
+  service:
+    name: ntp
+    enabled: yes
+
+- name: Lancement de ntp
+  service:
+    name: ntp
+    state: started

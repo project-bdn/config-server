@@ -1,0 +1,21 @@
+---
+- name: Generate local
+  locale_gen:
+    name: "{{locale}}"
+    state: present
+  when: ansible_distribution != "Ubuntu"
+
+- name: Updating local
+  command: /usr/sbin/update-locale LANG={{locale}} LC_ALL={{locale}} LANGUAGE={{language}}
+  changed_when: false
+
+- name: Set /etc/localtime
+  copy:
+    src: /usr/share/zoneinfo/{{timezone}}
+    dest: /etc/localtime
+    remote_src: yes
+
+- name: Set du timezone
+  timezone:
+    name: "{{timezone}}"
+  notify: update tzdata
