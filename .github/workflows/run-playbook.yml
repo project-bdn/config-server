@@ -10,9 +10,13 @@ on:
         options:
           - 01-base.yml
           - 10-docker.yml
+
       target:
-        description: The target host to run the playbook against from the inventory file
+        description: The target host to run the playbook against. Should be a host in the inventory file
         required: true
+        options:
+          - all
+          - ovh_manager
 
 
 jobs:
