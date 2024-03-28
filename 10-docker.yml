@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: "nickjj.docker" # https://github.com/nickjj/ansible-docker
+      docker__channel: ["stable"]
+      docker__version: "25.0"
+      docker__users:
+        - "{{ ansible_user_id }}" # Root
+        - "{{ ansible_user }}" # ssh user
+      tags:
+        - docker-init

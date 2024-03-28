@@ -8,11 +8,7 @@ A set of Ansible playbooks and scripts to configure a server for Klivar
 - Ansible installed: `pip3 install ansible==9.3.0`
 - Ansible roles and collections: `ansible-galaxy install -r requirements.yml --force`
 
-## The playbooks
-
-TODO
-
-## Configure a new server
+## Initial Configuration of a new server
 
 Before using Ansible, here are a few things to do:
 
@@ -23,5 +19,20 @@ Before using Ansible, here are a few things to do:
 3. Make sure you can connect via your SS private key before moving on.
 
 The playbooks in this repo are focused on Debian based distributions. Once you got a new serveur, add its information
-into the [inventory.yml](./inventory.yml) file similar to the existing hosts. 
+into the [inventory.yml](./inventory.yml) file similar to the existing hosts.
 
+## The playbooks
+
+The playbook names usually define the order in which to run them to configuration a new server. Not all playbook apply
+to servers.
+
+- [01-base.yml](01-base.yml): Security related settings about SSH and some common settings and packages to apply to all
+  server owned by Klivar.
+- [10-docker.yml](10-docker.yml): Install Docker
+
+## How to run a playbook locally
+
+1. Make sure you have the relevant SSH keys on our machine that have access to the servers in the inventory file.
+2. Run this to test the connection to the serveur `ansible -m setup all`. This command will gather and display some
+   metadata for **all**  servers in the inventory file.
+3. To run a playbook a specific host (in this case the `ovh_manager`): `ansible-playbook docker.yml ovh_manager`
