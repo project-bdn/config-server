@@ -28,6 +28,28 @@
           maxretry: 3
           bantime: 7200 # 2h
 
+    - role: firewall-ufw # Copie de https://github.com/Oefenweb/ansible-ufw avec le support de delete
+      vars:
+        ufw_rules:
+          - rule: allow
+            to_port: "{{ ansible_port }}"
+            protocol: tcp
+            delete: false
+            comment: 'allow incoming connection on custom ssh port'
+          - rule: allow
+            to_port: "80"
+            protocol: tcp
+            delete: false
+            comment: 'allow http connection'
+          - rule: allow
+            to_port: "443"
+            protocol: tcp
+            delete: false
+            comment: 'allow https connection'
+      tags:
+        - firewall
+
+
     - role: common
       tags:
         - common
