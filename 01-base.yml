@@ -49,10 +49,19 @@
       tags:
         - firewall
 
-
     - role: common
       tags:
         - common
+
+    - role: oh-my-zsh
+      vars:
+        users:
+          - name: "{{ ansible_user }}"
+            home: "/home/{{ ansible_user }}"
+          - name: root
+            home: /root
+      tags:
+        - oh-my-zsh
 
   tasks:
     - name: Make sure fail2ban service is really running
