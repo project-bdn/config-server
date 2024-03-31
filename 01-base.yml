@@ -1,6 +1,7 @@
 ---
-- hosts: all
-  become: yes
+- name: Setup security packages
+  hosts: all
+  become: true
   roles:
     - role: geerlingguy.security # https://github.com/geerlingguy/ansible-role-security
       security_fail2ban_enabled: false # Managed by the role below
@@ -35,17 +36,17 @@
             to_port: "{{ ansible_port }}"
             protocol: tcp
             delete: false
-            comment: 'allow incoming connection on custom ssh port'
+            comment: "allow incoming connection on custom ssh port"
           - rule: allow
             to_port: "80"
             protocol: tcp
             delete: false
-            comment: 'allow http connection'
+            comment: "allow http connection"
           - rule: allow
             to_port: "443"
             protocol: tcp
             delete: false
-            comment: 'allow https connection'
+            comment: "allow https connection"
       tags:
         - firewall
         - ufw
@@ -65,6 +66,10 @@
         - oh-my-zsh
 
   tasks:
-    - name: Make sure fail2ban service is really running
-      ansible.builtin.command: systemctl is-active fail2ban
-      changed_when: false
+    - name: Make sure the service is really running
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+      with_items:
+        - fail2ban
+        - ufw

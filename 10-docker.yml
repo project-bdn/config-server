@@ -1,6 +1,7 @@
 ---
-- hosts: all # We need to docker all hosts
-  become: yes
+- name: Install Docker
+  hosts: all # We need to docker all hosts
+  become: true
   roles:
     - role: "nickjj.docker" # https://github.com/nickjj/ansible-docker
       docker__channel: ["stable"]
@@ -11,8 +12,9 @@
       tags:
         - docker-init
 
-- hosts: ovh_manager
-  become: yes
+- name: Install docker swarm on the manager
+  hosts: ovh_manager
+  become: true
   tasks:
     - name: Swarm
       vars:
@@ -27,7 +29,6 @@
             task_history_retention_limit: 5
           register: init_swarm_result
 
-        #- name: Swarm init result
+        # - name: Swarm init result
         #  debug:
         #    msg: "{{ init_swarm_result }}"
-
