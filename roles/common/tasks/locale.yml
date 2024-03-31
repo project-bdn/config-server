@@ -1,12 +1,12 @@
 ---
 - name: Generate locale
   community.general.locale_gen:
-    name: "{{locale}}"
+    name: "{{ locale }}"
     state: present
   when: ansible_distribution != "Ubuntu"
 
 - name: Updating locale
-  ansible.builtin.command: /usr/sbin/update-locale LANG={{locale}} LC_ALL={{locale}} LANGUAGE={{language}}
+  ansible.builtin.command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }} LANGUAGE={{ language }}
   changed_when: false
 
 - name: Set du timezone
