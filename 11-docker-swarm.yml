@@ -1,0 +1,21 @@
+---
+- hosts: ovh_manager
+  become: yes
+  tasks:
+    - name: Swarm
+      vars:
+        # We use the python interpreter created by the role nickjj.docker.
+        # It contains the dependencies we need to init swarm
+        ansible_python_interpreter: /usr/local/bin/python3-docker
+      block:
+        - name: Init Swarm cluster address {{ ansible_default_ipv4.interface }}
+          community.docker.docker_swarm:
+            state: present
+            advertise_addr: "{{ ansible_default_ipv4.interface }}"
+            task_history_retention_limit: 5
+          register: init_swarm_result
+
+        #- name: Swarm init result
+        #  debug:
+        #    msg: "{{ init_swarm_result }}"
+
