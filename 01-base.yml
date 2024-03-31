@@ -48,6 +48,7 @@
             comment: 'allow https connection'
       tags:
         - firewall
+        - ufw
 
     - role: common
       tags:
@@ -65,5 +66,5 @@
 
   tasks:
     - name: Make sure fail2ban service is really running
-      command: systemctl is-active fail2ban
+      ansible.builtin.command: systemctl is-active fail2ban
       changed_when: false

@@ -1,4 +1,4 @@
 ---
 - name: update tzdata
   become: yes
-  command: /usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata
+  ansible.builtin.command: /usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata

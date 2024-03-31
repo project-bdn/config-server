@@ -1,6 +1,6 @@
 ---
 - name: Install some packages and dependencies
-  apt:
+  ansible.builtin.apt:
     name: "{{packages}}"
     state: present
     cache_valid_time: 2592000 # 30 jours
@@ -8,16 +8,16 @@
     - packages
 
 - name: Configuration des locales
-  import_tasks: locale.yml
+  ansible.builtin.import_tasks: locale.yml
   tags:
     - locale
 
 - name: Activation de ntp au démarrage
-  service:
+  ansible.builtin.service:
     name: ntp
     enabled: yes
 
 - name: Lancement de ntp
-  service:
+  ansible.builtin.service:
     name: ntp
     state: started
