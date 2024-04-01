@@ -12,4 +12,4 @@
 - name: Set du timezone
   community.general.timezone:
     name: "{{ timezone }}"
-  notify: update tzdata
+  notify: Update tzdata
