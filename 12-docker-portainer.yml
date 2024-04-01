@@ -1,5 +1,5 @@
 ---
-- name: Deploy traefik
+- name: Deploy portainer
   hosts: all
   vars_files:
     - ./vars/internal-tools.yml
@@ -14,29 +14,23 @@
         mode: "0764"
         recurse: true
 
-    - name: Copy traefik file
+    - name: Copy portainer file
       ansible.builtin.template:
-        src: traefik.yml
-        dest: "{{ destination_folder }}/traefik.yml"
+        src: portainer.yml
+        dest: "{{ destination_folder }}/portainer.yml"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: "0764"
 
-    - name: Create the network for traefik
-      community.docker.docker_network:
-        driver: overlay
-        name: "{{ traefik_network }}"
-        state: present
-
-    - name: Deploy traefik
+    - name: Deploy portainer
       community.docker.docker_stack:
-        name: traefik
+        name: portainer
         compose:
-          - "{{ destination_folder }}/traefik.yml"
+          - "{{ destination_folder }}/portainer.yml"
         prune: true
         state: present
 
-    - name: Wait for traefik to be ready
+    - name: Wait for portainer to be ready
       ansible.builtin.wait_for:
         host: "{{ item.host }}"
         port: "{{ item.port }}"
@@ -46,8 +40,8 @@
         sleep: 5
         timeout: 60
       loop:
-        - port: 80
+        - port: 9000
           host: "127.0.0.1"
         - port: 443
-          host: "{{ traefik_domain }}"
+          host: "{{ portainer_domain }}"
 
