@@ -23,7 +23,7 @@
   with_items: "{{ users }}"
 
 - name: Récuperation du chemin de zsh
-  ansible.builtin.shell: which zsh
+  ansible.builtin.command: which zsh
   changed_when: false
   register: zsh_path
 
