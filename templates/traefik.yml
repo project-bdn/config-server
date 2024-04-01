@@ -1,5 +1,4 @@
 # Redirection to HTTPS: https://jensknipper.de/blog/traefik-http-to-https-redirect/
-
 # https://dockerswarm.rocks/traefik/
 # https://nsirap.com/posts/005-docker-swarm-traefik/
 
@@ -67,12 +66,12 @@ services:
         # traefik-http set up only to use the middleware to redirect to https
         
         # Set the domain for the traefik web interface
-        - traefik.http.routers.traefik-public-http.rule=Host(`{{ domain }}`)
+        - traefik.http.routers.traefik-public-http.rule=Host(`{{ traefik_domain }}`)
         - traefik.http.routers.traefik-public-http.entrypoints=http
         - traefik.http.routers.traefik-public-http.middlewares=https-redirect
         # traefik-https the actual router using HTTPS
         
-        - traefik.http.routers.traefik-public-https.rule=Host(`{{ domain }}`)
+        - traefik.http.routers.traefik-public-https.rule=Host(`{{ traefik_domain }}`)
         - traefik.http.routers.traefik-public-https.entrypoints=https
         - traefik.http.routers.traefik-public-https.tls=true
         
