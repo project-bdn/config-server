@@ -1,0 +1,4 @@
+---
+deployment_path: /apps
+traefik_network: traefik-public
+

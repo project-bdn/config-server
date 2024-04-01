@@ -36,10 +36,18 @@ services:
         - traefik.enable=true
         - traefik.constraint-label=traefik-public
         - traefik.docker.network={{ traefik_network }}
-        - traefik.http.routers.portainer.rule=Host(`{{ portainer_domain }}`)
-        - traefik.http.routers.portainer.entrypoints=https
-        - traefik.http.routers.portainer.tls=true
-        - traefik.http.routers.portainer.tls.certresolver=letsencrypt
+        
+        # Http router: redirection to https
+        - traefik.http.routers.portainer-http.rule=Host(`{{ portainer_domain }}`)
+        - traefik.http.routers.portainer-http.entrypoints=http
+        - traefik.http.routers.portainer-http.middlewares=https-redirect
+        
+        # Https router
+        - traefik.http.routers.portainer-https.rule=Host(`{{ portainer_domain }}`)
+        - traefik.http.routers.portainer-https.entrypoints=https
+        - traefik.http.routers.portainer-https.tls=true
+        - traefik.http.routers.portainer-https.tls.certresolver=letsencrypt
+        
         - traefik.http.services.portainer.loadbalancer.server.port=9000
 
 networks:
