@@ -21,6 +21,8 @@
         # We use the python interpreter created by the role nickjj.docker.
         # It contains the dependencies we need to init swarm
         ansible_python_interpreter: /usr/local/bin/python3-docker
+      tags:
+        - swarm
       block:
         - name: Init Swarm cluster address {{ ansible_default_ipv4.interface }}
           community.docker.docker_swarm:
@@ -32,3 +34,10 @@
         # - name: Swarm init result
         #  debug:
         #    msg: "{{ init_swarm_result }}"
+
+        - name: Install docker_stack module requirements
+          ansible.builtin.pip:
+            name: "{{ item }}"
+          loop:
+            - jsondiff
+            - pyyaml
