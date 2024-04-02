@@ -100,5 +100,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Désactivation du timeout de déconnexion automatique ssh
+# Disable SSH auto log out
 unset TMOUT
+
+# Add additional directories to PATH
+export PATH=$PATH:$HOME/.local/bin
