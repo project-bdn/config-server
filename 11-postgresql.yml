@@ -1,0 +1,73 @@
+---
+- name: Install postgresql
+  hosts: ovh_manager
+  become: true
+  pre_tasks:
+    - name: PostgreSQL repo
+      block:
+        - name: Check if signing key is present
+          stat:
+            path: /etc/apt/trusted.gpg.d/pgdg.asc
+          register: postgresql_st_pgdg
+
+        - name: Import and Write gpg key to pgdg.asc
+          get_url:
+            url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+            dest: /etc/apt/trusted.gpg.d/pgdg.asc
+          when: not postgresql_st_pgdg.stat.exists
+
+        - name: Add postgresql repository into sources list
+          ansible.builtin.apt_repository:
+            repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+            state: present
+
+        - name: Update cache
+          apt: update_cache=yes state=latest
+  post_tasks:
+    - name: Install pgcli
+      tags:
+        - pgcli
+      block:
+        - name: Install pgcli
+          become_user: "postgres"
+          become: true
+          community.general.pipx:
+            name: pgcli # https://github.com/dbcli/pgcli
+            state: present
+
+        - name: Add pgcli to the path
+          ansible.builtin.lineinfile:
+            path: /var/lib/postgresql/.bashrc
+            line: "export PATH=$PATH:$HOME/.local/bin"
+            create: yes
+            group: postgres
+            owner: postgres
+
+    - name: Allow port postgresql
+      community.general.ufw:
+        rule: allow
+        port: 5432
+        proto: tcp
+        delete: "{{ item.delete | default(false) }}"
+        direction: in
+        interface: "{{ item.interface | default('') }}"
+        from_ip: "{{ item.from_ip | default('any') }}"
+        comment: "{{ item.comment }}"
+      loop:
+        - from_ip: 81.220.52.179
+          comment: "allow postgreSQL connection from Mohamed IP"
+        - interface: docker0
+          comment: "allow postgreSQL connection from Docker"
+          from_ip: "{{ ansible_docker0.ipv4.address }}/{{ ansible_docker0.ipv4.prefix }}"
+      tags:
+        - ufw
+
+  roles:
+    - role: "galaxyproject.postgresql"
+      postgresql_version: "15"
+      postgresql_pg_hba_conf:
+        - "host   all   all   0.0.0.0/0   scram-sha-256" # Outside connection are restricted by the firewall
+      postgresql_conf:
+          - listen_addresses: "'*'" # Listen on all interfaces. # Outside connection are restricted by the firewall
+      tags:
+        - postgresql
