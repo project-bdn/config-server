@@ -33,7 +33,6 @@ services:
       labels:
         - traefik.enable=true
         - traefik.constraint-label=traefik-public
-        - traefik.docker.network={{ traefik_network }}
         
         # Http router: redirection to https
         - traefik.http.routers.portainer-http.rule=Host(`{{ portainer_domain }}`)

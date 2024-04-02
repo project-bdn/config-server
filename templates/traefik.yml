@@ -1,6 +1,7 @@
 # Redirection to HTTPS: https://jensknipper.de/blog/traefik-http-to-https-redirect/
 # https://dockerswarm.rocks/traefik/
 # https://nsirap.com/posts/005-docker-swarm-traefik/
+# https://doc.traefik.io/traefik/master/routing/providers/swarm
 
 version: '3.8'
 
@@ -13,7 +14,7 @@ services:
       - "80:80"
       # Listen on port 443, default for HTTPS
       - "443:443"
-    command:
+    command: # See https://doc.traefik.io/traefik/reference/static-configuration/cli/ and https://doc.traefik.io/traefik/master/providers/swarm/
       # Enable Docker in Traefik, so that it reads labels from Docker services
       - --providers.docker
       # Add a constraint to only use services with the label "traefik.constraint-label=traefik-public"
@@ -22,6 +23,8 @@ services:
       - --providers.docker.exposedByDefault=false
       # Enable Docker Swarm mode
       - --providers.swarm.endpoint=unix:///var/run/docker.sock
+      # The default network to use when connecting to other containers
+      - --providers.swarm.network={{ traefik_network }}
 
       # Create an entrypoint "http" listening on port 80
       - --entrypoints.http.address=:80
@@ -39,6 +42,7 @@ services:
       - --accesslog
       # Enable the Traefik log, for configurations and errors
       - --log
+      - --log.level=DEBUG
       # Enable the Dashboard and API
       - --api
     deploy:
@@ -49,8 +53,6 @@ services:
       labels:
         # Enable Traefik for this service, to make it available in the public network
         - traefik.enable=true
-        # Use the traefik-public network (declared below)
-        - traefik.docker.network={{ traefik_network }}
         # Use the custom label "traefik.constraint-label=traefik-public"
         # This public Traefik will only use services with this label
         # That way you can add other internal Traefik instances per stack if needed
