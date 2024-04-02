@@ -57,7 +57,7 @@ services:
         - traefik.constraint-label=traefik-public
         
         # admin-auth middleware with HTTP Basic auth
-        # Using the environment variables USERNAME and HASHED_PASSWORD
+        # Note: the original password is in the ansible vault. It was hashed with the command: echo $(htpasswd -nB ${THE_USERNAME}) | sed -e s/\\$/\\$\\$/g
         - traefik.http.middlewares.admin-auth.basicauth.users={{ traefik_basic_auth_user }}:$$2y$$05$$WdIQRn0tyVGuTFOQeWdDWOw9Hi9UjokhZ35mERY9sM8kKzx0gTQ5.
         
         # https-redirect middleware to redirect HTTP to HTTPS
@@ -94,7 +94,7 @@ services:
     networks:
       # Use the public network created to be shared between Traefik and
       # any other service that needs to be publicly available with HTTPS
-      - traefik-public
+      - "{{ traefik_network }}"
 
 volumes:
   # Create a volume to store the certificates on the manager
