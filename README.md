@@ -33,7 +33,7 @@ to servers.
   user is available in the vault file. See below how to read the vault.
 - [12-docker-portainer.yml](12-docker-portainer.yml): Install portainer. Once installed, you need to access it ASAP to
   set the admin user and password.
-- [11-postgresql.yml](11-postgresql.yml): Install PostgreSQL to be used by the different Klivar instances. Once
+- [13-postgresql.yml](13-postgresql.yml): Install PostgreSQL to be used by the different Klivar instances. Once
   installed,
     - Set a password for the default user `postgres` by
       running `sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'new_password';"`

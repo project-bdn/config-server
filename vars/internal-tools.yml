@@ -8,3 +8,7 @@ traefik_basic_auth_password: "{{ vault_traefik_basic_auth_password }}"
 
 portainer_domain: docker.klivar.com
 
+pgadmin_domain: db-admin.klivar.com
+pgadmin_default_admin_email: elmhaidara@outlook.fr
+pgadmin_default_admin_password: "{{ vault_pgadmin_default_password }}"
+pgadmin_default_admin_password_swarm_secret_name: pdgadmin-default-password
