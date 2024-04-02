@@ -30,19 +30,6 @@
         prune: true
         state: present
 
-    - name: Wait for portainer to be ready (TCP Check)
-      ansible.builtin.wait_for:
-        host: "{{ item.host }}"
-        port: "{{ item.port }}"
-        state: started
-        delay: 5
-        connect_timeout: 10
-        sleep: 5
-        timeout: 60
-      loop:
-        - port: 9000
-          host: "127.0.0.1"
-
     - name: Check if we can access the service
       ansible.builtin.uri:
         url: http://{{ portainer_domain }}
