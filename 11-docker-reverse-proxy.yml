@@ -38,19 +38,6 @@
         prune: true
         state: present
 
-    - name: Wait for traefik to be ready (TCP Check)
-      ansible.builtin.wait_for:
-        host: "{{ item.host }}"
-        port: "{{ item.port }}"
-        state: started
-        delay: 5
-        connect_timeout: 10
-        sleep: 5
-        timeout: 60
-      loop:
-        - port: 80
-          host: "127.0.0.1"
-
     - name: Check if we can access the service
       ansible.builtin.uri:
         url: http://{{ traefik_domain }}
@@ -61,3 +48,6 @@
         return_content: true
       register: this
       failed_when: "'Traefik' not in this.content or this.status != 200 or 'https://' not in this.url"
+      retries: 5
+      delay: 5
+      until: this.status == 200
