@@ -87,10 +87,25 @@
         state: present
       tags:
         - pgadmin
+
   roles:
     - role: deploy-swarm-stack
       deploy_swarm_stack_name: pgadmin
       deploy_swarm_stack_template_name: pgadmin.yml
       deploy_swarm_stack_dest_folder: "{{ destination_folder }}"
+      tags:
+        - pgadmin
+
+  tasks:
+    - name: Check if we can access the service
+      ansible.builtin.uri:
+        url: http://{{ pgadmin_domain }}
+        follow_redirects: true
+        return_content: true
+      register: this
+      failed_when: "'pgAdmin' not in this.content or this.status != 200 or 'https://' not in this.url"
+      retries: 5
+      delay: 10
+      until: this.status == 200
       tags:
         - pgadmin
