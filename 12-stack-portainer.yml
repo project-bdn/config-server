@@ -1,35 +1,19 @@
 ---
 - name: Deploy portainer
-  hosts: all
+  hosts: ovh_manager
   vars_files:
     - ./vars/internal-tools.yml
   become: true
+
+  roles:
+    - role: deploy-swarm-stack
+      deploy_swarm_stack_name: portainer
+      deploy_swarm_stack_template_name: portainer.yml
+      deploy_swarm_stack_dest_folder: "{{ destination_folder }}"
+      tags:
+        - portainer
+
   tasks:
-    - name: Create destination_folder
-      ansible.builtin.file:
-        path: "{{ destination_folder }}"
-        state: directory
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "0764"
-        recurse: true
-
-    - name: Copy portainer file
-      ansible.builtin.template:
-        src: portainer.yml
-        dest: "{{ destination_folder }}/portainer.yml"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "0764"
-
-    - name: Deploy portainer
-      community.docker.docker_stack:
-        name: portainer
-        compose:
-          - "{{ destination_folder }}/portainer.yml"
-        prune: true
-        state: present
-
     - name: Check if we can access the service
       ansible.builtin.uri:
         url: http://{{ portainer_domain }}
@@ -38,5 +22,5 @@
       register: this
       failed_when: "'Portainer' not in this.content or this.status != 200 or 'https://' not in this.url"
       retries: 5
-      delay: 5
+      delay: 10
       until: this.status == 200
