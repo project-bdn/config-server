@@ -12,6 +12,7 @@
         scope: swarm
         name: "{{ traefik_network }}"
         state: present
+        attachable: true
         driver_options:
           encrypted: true
 
