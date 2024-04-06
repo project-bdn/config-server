@@ -48,4 +48,3 @@
 # sudo ufw allow in from 192.168.252.0/22 to any port 7946 proto tcp comment 'Swarm: for overlay network node discovery tcp'
 # sudo ufw allow in from 192.168.252.0/22 to any port 7946 proto udp comment 'Swarm: for overlay network node discovery udp'
 # sudo ufw allow in from 192.168.252.0/22 to any port 4789 proto udp comment 'Swarm: for overlay network traffic'
-

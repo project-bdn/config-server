@@ -14,6 +14,7 @@
           ansible.builtin.get_url:
             url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
             dest: /etc/apt/trusted.gpg.d/pgdg.asc
+            mode: "0644"
           when: not postgresql_st_pgdg.stat.exists
 
         - name: Add postgresql repository into sources list
@@ -59,9 +60,11 @@
       loop:
         - from_ip: 81.220.52.179
           comment: "allow postgreSQL connection from Mohamed IP"
-        - interface: docker0
+        - from_ip: "{{ ansible_docker0.ipv4.address }}/{{ ansible_docker0.ipv4.prefix }}"
+          interface: docker0
           comment: "allow postgreSQL connection from Docker"
-          from_ip: "{{ ansible_docker0.ipv4.address }}/{{ ansible_docker0.ipv4.prefix }}"
+        - from_ip: "{{ ansible_docker_gwbridge.ipv4.address }}/{{ ansible_docker_gwbridge.ipv4.prefix }}"
+          comment: "allow postgreSQL connection from docker_gwbridge"
       tags:
         - ufw
 
