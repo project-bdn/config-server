@@ -46,8 +46,8 @@ jobs:
         run: |
           set -x
           ansible --version
+          ansible-galaxy install -v -r requirements.yml
           
-          ansible-galaxy install -vvv -r requirements.yml
           mkdir -p ~/.ssh/
           echo "${{ secrets.OVH_MANAGER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
