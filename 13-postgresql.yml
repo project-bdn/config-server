@@ -65,6 +65,7 @@
           comment: "allow postgreSQL connection from Docker"
         - from_ip: "{{ ansible_docker_gwbridge.ipv4.address }}/{{ ansible_docker_gwbridge.ipv4.prefix }}"
           comment: "allow postgreSQL connection from docker_gwbridge"
+          interface: docker_gwbridge
       tags:
         - ufw
 
