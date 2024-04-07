@@ -33,10 +33,11 @@ to servers.
   user is available in the vault file. See below how to read the vault.
 - [12-docker-portainer.yml](12-stack-portainer.yml): Install portainer. Once installed, you need to access it ASAP to
   set the admin user and password.
-- [13-postgresql.yml](13-postgresql.yml): Install PostgreSQL to be used by the different Klivar instances. Once
+- [13-postgresql.yml](13-postgresql.yml): Install PostgreSQL to be used by the different instances of Klivar. Once
   installed,
     - Set a password for the default user `postgres` by
-      running `sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'new_password';"`
+      running `sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'new_password';"`. The current password for this
+      user is in the vault file: `vault_postgres_admin_user_password`.
     - You need to create the databases and users for instance of Klivar. TODO: document the process.
 
 ## How to run a playbook locally
@@ -51,3 +52,5 @@ to servers.
 
 The vault file is encrypted. To read it, you need the vault password. Create the file `.vault_pass` and put the password
 in it. Then run this command: `ansible-vault view group_vars/all/vault`
+
+To edit the vault, run `ansible-vault edit group_vars/all/vault`.
