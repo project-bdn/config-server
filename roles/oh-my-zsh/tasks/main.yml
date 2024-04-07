@@ -39,3 +39,8 @@
     dest: "{{ item.home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     version: master
   with_items: "{{ users }}"
+
+- name: Installation de fzf
+  import_tasks: fzf.yml
+  tags:
+    - fzf
