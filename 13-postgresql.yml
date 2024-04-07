@@ -60,6 +60,7 @@
       loop:
         - from_ip: 81.220.52.179
           comment: "allow postgreSQL connection from Mohamed IP"
+          delete: true
         - from_ip: "{{ ansible_docker0.ipv4.address }}/{{ ansible_docker0.ipv4.prefix }}"
           interface: docker0
           comment: "allow postgreSQL connection from Docker"
