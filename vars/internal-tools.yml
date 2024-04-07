@@ -1,5 +1,5 @@
 ---
-destination_folder: "{{ deployment_path }}/internal"
+internal_apps_folder: "{{ apps_folder }}/internal"
 ansible_python_interpreter: /usr/local/bin/python3-docker # For docker swarm commands
 
 traefik_domain: reverse-proxy.klivar.com

@@ -20,7 +20,7 @@
     - role: deploy-swarm-stack
       deploy_swarm_stack_name: traefik
       deploy_swarm_stack_template_name: traefik.yml
-      deploy_swarm_stack_dest_folder: "{{ destination_folder }}"
+      deploy_swarm_stack_dest_folder: "{{ internal_apps_folder }}"
       tags:
         - traefik
 

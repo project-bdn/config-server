@@ -9,7 +9,7 @@
 
 - name: Make sure the destination_folder exists
   ansible.builtin.file:
-    path: "{{ deploy_swarm_stack_dest_folder }}"
+    path: "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}"
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
@@ -19,7 +19,7 @@
 - name: Copy the docker stack file
   ansible.builtin.template:
     src: "{{ deploy_swarm_stack_template_name }}"
-    dest: "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}.yml"
+    dest: "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}/stack.yml"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: "0764"
@@ -28,6 +28,6 @@
   community.docker.docker_stack:
     name: "{{ deploy_swarm_stack_name }}"
     compose:
-      - "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}.yml"
+      - "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}/stack.yml"
     prune: true
     state: present
