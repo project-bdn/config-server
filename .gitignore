@@ -8,3 +8,8 @@ gen
 .vscode
 debug.yml
 .vault_pass
+
+.terraform/
+.terraform.lock.hcl
+
+tmp/

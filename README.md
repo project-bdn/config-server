@@ -34,10 +34,13 @@ to servers.
 - [12-docker-portainer.yml](12-stack-portainer.yml): Install portainer. Once installed, you need to access it ASAP to
   set the admin user and password.
 - [13-postgresql.yml](13-postgresql.yml): Install PostgreSQL to be used by the different instances of Klivar. Once
-  installed,
+  installed, perform the following actions:
     - Set a password for the default user `postgres` by
       running `sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'new_password';"`. The current password for this
       user is in the vault file: `vault_postgres_admin_user_password`.
+    - Block connection to
+      the `postgres` database: `sudo -u postgres psql -c "REVOKE connect ON DATABASE postgres FROM PUBLIC;"`. Only
+      the use `postgres` should have to this table.
     - You need to create the databases and users for instance of Klivar. TODO: document the process.
 
 ## How to run a playbook locally

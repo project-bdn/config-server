@@ -4,6 +4,8 @@
   become: true
   pre_tasks:
     - name: PostgreSQL repo
+      tags:
+        - postgresql
       block:
         - name: Check if signing key is present
           ansible.builtin.stat:
@@ -58,9 +60,6 @@
         from_ip: "{{ item.from_ip | default('any') }}"
         comment: "{{ item.comment }}"
       loop:
-        - from_ip: 81.220.52.179
-          comment: "allow postgreSQL connection from Mohamed IP"
-          delete: true
         - from_ip: "{{ ansible_docker0.ipv4.address }}/{{ ansible_docker0.ipv4.prefix }}"
           interface: docker0
           comment: "allow postgreSQL connection from Docker"
@@ -73,8 +72,13 @@
   roles:
     - role: "galaxyproject.postgresql"
       postgresql_version: "15"
-      postgresql_pg_hba_conf:
-        - "host   all   all   0.0.0.0/0   scram-sha-256" # Outside connection are restricted by the firewall
+      postgresql_pg_hba_conf: # https://www.postgresql.org/docs/current/auth-pg-hba-conf.html
+        - ""
+        - "# Allows the postgres user to access any databases via TCP/IP"
+        - "host   all   postgres   0.0.0.0/0   scram-sha-256"
+        - ""
+        - "# Allows connecting to the DB which has the same name as the user"
+        - "host   samerole   all   0.0.0.0/0   scram-sha-256" # Outside connection are restricted by the firewall
       postgresql_conf: # NOTE: if you change this, you have to restart postgres
         - listen_addresses: "'*'" # Listen on all interfaces. # Outside connection are restricted by the firewall
       tags:
