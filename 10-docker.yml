@@ -2,15 +2,29 @@
 - name: Install Docker
   hosts: all # We need to docker all hosts
   become: true
+  tags:
+    - docker-init
   roles:
     - role: "nickjj.docker" # https://github.com/nickjj/ansible-docker
-      docker__channel: ["stable"]
+      docker__channel: [ "stable" ]
       docker__version: "25.0"
       docker__users:
         - "{{ ansible_user_id }}" # Root
         - "{{ ansible_user }}" # ssh user
+  tasks:
+    - name: Log into github private registry
+      become_user: "{{ item }}"
+      become: yes
+      community.docker.docker_login:
+        registry_url: ghcr.io
+        username: "{{ vault_github_package_user }}"
+        password: "{{ vault_github_package_password }}"
+      loop:
+        - "{{ ansible_user_id }}" # Root
+        - "{{ ansible_user }}" # ssh user
       tags:
-        - docker-init
+        - docker-login
+
 
 - name: Install docker swarm on the manager
   hosts: ovh_manager

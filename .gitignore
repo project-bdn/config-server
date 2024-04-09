@@ -11,5 +11,6 @@ debug.yml
 
 .terraform/
 .terraform.lock.hcl
+terraform.tfstate*
 
 tmp/
