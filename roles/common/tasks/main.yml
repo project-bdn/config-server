@@ -7,6 +7,14 @@
   tags:
     - packages
 
+- name: Download yq binary
+  ansible.builtin.get_url:
+    url: "https://github.com/mikefarah/yq/releases/download/v4.43.1/yq_linux_amd64"
+    dest: "/usr/bin/yq"
+    mode: "0755"
+  tags:
+    - packages
+
 - name: Install some packages and dependencies
   ansible.builtin.apt:
     name: "{{ packages }}"
