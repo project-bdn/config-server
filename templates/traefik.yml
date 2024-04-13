@@ -28,8 +28,13 @@ services:
 
       # Create an entrypoint "http" listening on port 80
       - --entrypoints.http.address=:80
+      # https://doc.traefik.io/traefik/routing/entrypoints/#respondingtimeouts
+      - --entryPoints.http.transport.respondingTimeouts.readTimeout=120
+      - --entryPoints.http.transport.respondingTimeouts.idleTimeout=180
       # Create an entrypoint "https" listening on port 443
       - --entrypoints.https.address=:443
+      - --entryPoints.https.transport.respondingTimeouts.readTimeout=120
+      - --entryPoints.https.transport.respondingTimeouts.idleTimeout=180
 
       # Create the certificate resolver "le" for Let's Encrypt, uses the environment variable EMAIL
       - --certificatesresolvers.letsencrypt.acme.email=elmhaidara@outlook.fr
