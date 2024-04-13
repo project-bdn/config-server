@@ -31,5 +31,12 @@
       - "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}/stack.yml"
     prune: true
     state: present
+    resolve_image: always
+  register: stack_deploy
+
+- name: Stack deploy output
+  debug:
+    msg: "{{ stack_deploy.stdout_lines }}"
+
 
 # TODO: wait for the service to be deployed before continuing: https://stackoverflow.com/questions/47161616/docker-swarm-deploy-wait-for-service-container-to-be-present
