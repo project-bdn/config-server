@@ -14,3 +14,7 @@ debug.yml
 terraform.tfstate*
 
 tmp/
+ansible.cfg
+inventory.yml
+requirements.yml
+group_vars

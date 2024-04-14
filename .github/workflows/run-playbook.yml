@@ -6,7 +6,7 @@ on:
       playbook-file:
         description: Name of the playbook to run
         required: true
-        default: default.yml
+        default: 01-base.yml
         type: choice
         options:
           - 01-base.yml
@@ -19,6 +19,7 @@ on:
         description: The target host to run the playbook against. Should be a host in the inventory file
         required: true
         type: choice
+        default: ovh_manager
         options:
           - all
           - ovh_manager
@@ -35,23 +36,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Cache Ansible plugins/roles
-        uses: actions/cache@v4
+      - name: Setup ansible
+        uses: ./.github/actions/setup-ansible
         with:
-          path: ~/.ansible/
-          key: ansible-plugins-${{ hashFiles('**/requirements.yml') }}
-          save-always: true
-
-      - name: Setup Ansible and ssh
-        run: |
-          set -x
-          ansible --version
-          ansible-galaxy install -v -r requirements.yml
-          
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.OVH_MANAGER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
-          chmod 700 ~/.ssh/id_rsa
+          ovh_manager_ssh_private_key: ${{ secrets.OVH_MANAGER_SSH_PRIVATE_KEY }}
+          ansible_vault_pass: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
 
       - name: Running the playbook
         run: ansible-playbook ${{ inputs.tags }} -l ${{ inputs.target }} ${{ inputs.playbook-file }}

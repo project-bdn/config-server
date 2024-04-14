@@ -1,12 +1,21 @@
 # Config-server
 
-A set of Ansible playbooks and scripts to configure a server for Klivar
+A set of Ansible playbooks and scripts to configure a server for Klivar.
 
 ## Dependencies and prerequisites
 
-- SSH keys having access to the servers defined in the [inventory.yml](./inventory.yml)
-- Ansible installed: `pip3 install ansible==9.3.0`
-- Ansible roles and collections: `ansible-galaxy install -r requirements.yml --force`
+### The composite action `setup-ansible`
+
+There is a [composite action](https://docs.github.com/fr/actions/creating-actions/creating-a-composite-action) located
+at [setup-ansible](.github/actions/setup-ansible) that contains the ansible configuration:
+
+- [group_vars](.github/actions/setup-ansible/config/group_vars): Variables for all hosts
+- [ansible.cfg](.github/actions/setup-ansible/config/ansible.cfg): Ansible CLI configuration
+- [inventory.yml](.github/actions/setup-ansible/config/inventory.yml): The inventory file containing the list of servers
+- [requirements.yml](.github/actions/setup-ansible/config/requirements.yml): Ansible roles and collections to install.
+
+The main purpose of this action is to be used in GitHub Actions by this repo and other repos in the GitHub organization.
+The idea is to share the same Ansible configurations here and there.
 
 ## Initial Configuration of a new server
 
@@ -29,9 +38,9 @@ to servers.
 - [01-base.yml](01-base.yml): Security related settings about SSH and some common settings and packages to apply to all
   server owned by Klivar.
 - [10-docker.yml](10-docker.yml): Install Docker, init docker Swarm, crontab to prune Docker everyday
-- [11-docker-reverse-proxy.yml](11-stack-reverse-proxy.yml): Install the reverse-proxy (traefik). The password for the
+- [11-stack-reverse-proxy.yml](11-stack-reverse-proxy.yml): Install the reverse-proxy (traefik). The password for the
   user is available in the vault file. See below how to read the vault.
-- [12-docker-portainer.yml](12-stack-portainer.yml): Install portainer. Once installed, you need to access it ASAP to
+- [12-stack-portainer.yml](12-stack-portainer.yml): Install portainer. Once installed, you need to access it ASAP to
   set the admin user and password.
 - [13-postgresql.yml](13-postgresql.yml): Install PostgreSQL to be used by the different instances of Klivar. Once
   installed, perform the following actions:
@@ -46,10 +55,17 @@ to servers.
 ## How to run a playbook locally
 
 1. Make sure you have the relevant SSH keys on our machine that have access to the servers in the inventory file.
-2. You need the ansible vault password. Create the file `.vault_pass` and put the password in it.
-3. Run this to test the connection to the serveur `ansible -m setup all`. This command will gather and display some
+2. Create symbolic links for the files in [.github/actions/setup-ansible/config](.github/actions/setup-ansible/config)
+   in the root dir:
+    - `ln -s .github/actions/setup-ansible/config/group_vars .`
+    - `ln -s .github/actions/setup-ansible/config/ansible.cfg .`
+    - `ln -s .github/actions/setup-ansible/config/requirements.yml .`
+    - `ln -s .github/actions/setup-ansible/config/inventory.yml .`
+3. You need the ansible vault password. Create the file `.vault_pass` and put the password in it. Ask for the vault
+   password.
+4. Run this to test the connection to the serveur `ansible -m setup all`. This command will gather and display some
    metadata for **all**  servers in the inventory file.
-4. To run a playbook a specific host (in this case the `ovh_manager`): `ansible-playbook docker.yml ovh_manager`
+5. To run a playbook a specific host (in this case the `ovh_manager`): `ansible-playbook 10-docker.yml ovh_manager`
 
 ## How to read the vault
 
