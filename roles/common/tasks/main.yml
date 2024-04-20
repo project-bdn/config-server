@@ -40,3 +40,11 @@
 - name: Set the hostname from the inventory_hostname
   ansible.builtin.hostname:
     name: "{{ inventory_hostname | replace('_', '-') }}"
+
+# Set vm.max_map_count to 262144.
+# Some tools like ES requires it: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
+- ansible.posix.sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    state: present
+    reload: true
