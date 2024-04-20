@@ -22,6 +22,8 @@ services:
           - node.role == manager
       update_config:
         order: start-first
+      restart_policy:
+        condition: any
       labels:
         - traefik.enable=true
         - traefik.constraint-label=traefik-public

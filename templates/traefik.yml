@@ -61,6 +61,8 @@ services:
           - node.role == manager
       update_config:
         order: start-first
+      restart_policy:
+        condition: any
       labels:
         # Enable Traefik for this service, to make it available in the public network
         - traefik.enable=true
