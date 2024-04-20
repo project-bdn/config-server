@@ -59,6 +59,8 @@ services:
         constraints:
           # Make the traefik service run only on the manager node. It's where we store the certificates.
           - node.role == manager
+      update_config:
+        order: start-first
       labels:
         # Enable Traefik for this service, to make it available in the public network
         - traefik.enable=true

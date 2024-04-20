@@ -20,6 +20,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+      update_config:
+        order: start-first
       labels:
         - traefik.enable=true
         - traefik.constraint-label=traefik-public
