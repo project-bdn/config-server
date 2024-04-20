@@ -13,6 +13,15 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
+      update_config:
+        order: start-first
+        parallelism: 1
+        failure_action: rollback
+      rollback_config:
+        order: start-first
+        parallelism: 1
+      restart_policy:
+        condition: any
       labels:
         - traefik.enable=false
 
@@ -32,6 +41,11 @@ services:
           - node.role == manager
       update_config:
         order: start-first
+        parallelism: 1
+        failure_action: rollback
+      rollback_config:
+        order: start-first
+        parallelism: 1
       restart_policy:
         condition: any
       labels:

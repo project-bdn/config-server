@@ -22,6 +22,11 @@ services:
           - node.role == manager
       update_config:
         order: start-first
+        parallelism: 1
+        failure_action: rollback
+      rollback_config:
+        order: start-first
+        parallelism: 1
       restart_policy:
         condition: any
       labels:
