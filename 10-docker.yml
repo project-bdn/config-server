@@ -25,6 +25,16 @@
       tags:
         - docker-login
 
+    - name: Get the script allowing to wait for a docker stack deploy to complete
+      vars: # https://github.com/sudo-bmitch/docker-stack-wait
+        version: 5ae8405fd29b50b5c0a8df715e947ecf64897bff
+      block:
+        - name: Download the script from GitHub
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/sudo-bmitch/docker-stack-wait/{{ version }}/docker-stack-wait.sh
+            dest: /usr/local/bin/docker-stack-wait
+            mode: "0775"
+
 
 - name: Install docker swarm on the manager
   hosts: ovh_manager

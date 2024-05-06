@@ -9,7 +9,7 @@
 
 - name: Make sure the destination_folder exists
   ansible.builtin.file:
-    path: "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}"
+    path: "{{ final_dest_folder }}"
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
@@ -19,7 +19,7 @@
 - name: Copy the docker stack file
   ansible.builtin.template:
     src: "{{ deploy_swarm_stack_template_name }}"
-    dest: "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}/stack.yml"
+    dest: "{{ final_dest_folder }}/stack.yml"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: "0764"
@@ -28,7 +28,7 @@
   community.docker.docker_stack:
     name: "{{ deploy_swarm_stack_name }}"
     compose:
-      - "{{ deploy_swarm_stack_dest_folder }}/{{ deploy_swarm_stack_name }}/stack.yml"
+      - "{{ final_dest_folder }}/stack.yml"
     prune: true
     state: present
     resolve_image: always
@@ -39,4 +39,12 @@
     msg: "{{ stack_deploy.stdout_lines }}"
 
 
-# TODO: wait for the service to be deployed before continuing: https://stackoverflow.com/questions/47161616/docker-swarm-deploy-wait-for-service-container-to-be-present
+- name: Wait for the deployment to finish
+  ansible.builtin.command:
+    cmd: docker-stack-wait -t 20 {{ deploy_swarm_stack_name }}
+    chdir: "{{ final_dest_folder }}"
+  register: wait_for_deploy
+  ignore_errors: true
+  changed_when: false
+  retries: 6
+  delay: 2
