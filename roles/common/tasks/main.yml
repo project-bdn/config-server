@@ -6,6 +6,14 @@
     cache_valid_time: 2592000 # 30 jours
   tags:
     - packages
+  register: apt_update_upgrade
+
+- name: Show apt outputs
+  debug:
+    msg: "{{ apt_update_upgrade.stdout_lines }}"
+  tags:
+    - packages
+  when: apt_update_upgrade.changed
 
 - name: Download yq binary
   ansible.builtin.get_url:
