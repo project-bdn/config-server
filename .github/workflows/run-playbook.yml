@@ -39,7 +39,7 @@ jobs:
       - name: Setup ansible
         uses: ./.github/actions/setup-ansible
         with:
-          ovh_manager_ssh_private_key: ${{ secrets.OVH_MANAGER_SSH_PRIVATE_KEY }}
+          ssh_private_key: ${{ secrets.OVH_MANAGER_SSH_PRIVATE_KEY }}
           ansible_vault_pass: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
 
       - name: Running the playbook
