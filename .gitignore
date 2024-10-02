@@ -12,6 +12,7 @@ debug.yml
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate*
+.terraform.tfstate.lock.info
 
 tmp/
 ansible.cfg
