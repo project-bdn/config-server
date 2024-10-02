@@ -12,7 +12,6 @@ terraform {
   }
 }
 
-
 provider "postgresql" {
   host     = "localhost"
   username = "postgres"
@@ -29,3 +28,9 @@ module "klivar_play" {
   source        = "./klivar-database-and-user"
   instance_name = "play"
 }
+
+module "klivar_playground" {
+  source        = "./klivar-database-and-user"
+  instance_name = "playground"
+}
+

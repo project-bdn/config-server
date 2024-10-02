@@ -8,3 +8,9 @@ output "klivar_play" {
   sensitive = true
 }
 
+output "klivar_playground" {
+  value     = module.klivar_playground
+  sensitive = true
+}
+
+
