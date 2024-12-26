@@ -25,7 +25,7 @@ Before using Ansible, here are a few things to do:
    line `#Port 22`. Change it to `Port 2209` (or something else). Restart `sshd` service: `sudo systemctl restart sshd`.
 2. Connect to the server and upload your SSH public key to the default user. We will disable login via password later
    one.
-3. Make sure you can connect via your SS private key before moving on.
+3. Make sure you can connect via your SSH private key before moving on.
 
 The playbooks in this repo are focused on Debian based distributions. Once you got a new serveur, add its information
 into the [inventory.yml](./inventory.yml) file similar to the existing hosts.
@@ -36,9 +36,9 @@ The playbook names usually define the order in which to run them to configuratio
 to servers.
 
 - [01-base.yml](01-base.yml): Security related settings about SSH and some common settings and packages to apply to all
-  server owned by Klivar.
+  servers owned by Klivar.
 - [10-docker.yml](10-docker.yml): Install Docker, init docker Swarm, crontab to prune Docker everyday
-- [11-stack-reverse-proxy.yml](11-stack-reverse-proxy.yml): Install the reverse-proxy (traefik). The password for the
+- [11-stack-reverse-proxy.yml](11-stack-reverse-proxy.yml): Install the reverse-proxy (Traefik). The password for the
   user is available in the vault file. See below how to read the vault.
 - [12-stack-portainer.yml](12-stack-portainer.yml): Install portainer. Once installed, you need to access it ASAP to
   set the admin user and password.
@@ -50,7 +50,8 @@ to servers.
     - Block connection to
       the `postgres` database: `sudo -u postgres psql -c "REVOKE connect ON DATABASE postgres FROM PUBLIC;"`. Only
       the use `postgres` should have to this table.
-    - You need to create the databases and users for instance of Klivar. TODO: document the process.
+    - You need to create the databases and users for instance of Klivar. See the [README](./postgres-databases/README.md)
+      in the `postgres-databases` folder.
 
 ## How to run a playbook locally
 
@@ -64,7 +65,7 @@ to servers.
 3. You need the ansible vault password. Create the file `.vault_pass` and put the password in it. Ask for the vault
    password.
 4. Run this to test the connection to the serveur `ansible -m setup all`. This command will gather and display some
-   metadata for **all**  servers in the inventory file.
+   metadata for **all** servers in the inventory file.
 5. To run a playbook a specific host (in this case the `ovh_manager`): `ansible-playbook 10-docker.yml ovh_manager`
 
 ## How to read the vault
