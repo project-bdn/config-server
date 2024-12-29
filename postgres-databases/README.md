@@ -32,3 +32,17 @@ Call the module like this with the name of the database you want
   ```
 - Run `terraform apply` to check the plan. You should see some new resources being added.
 - To get the actual DB name, user and password, run `terraform outpout klivar_new`
+
+## How to connect to the database via the CLI
+
+Once logged in via SSH to the server, do the following:
+
+```shell
+sudo su postgres
+pgcli
+```
+
+Example: 
+
+![pgcli.png](pgcli.png)
+

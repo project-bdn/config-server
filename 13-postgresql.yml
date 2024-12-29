@@ -109,7 +109,7 @@
     - name: Check if we can access the service
       ansible.builtin.uri:
         url: http://{{ pgadmin_domain }}
-        follow_redirects: true
+        follow_redirects: safe
         return_content: true
       register: this
       failed_when: "'pgAdmin' not in this.content or this.status != 200 or 'https://' not in this.url"

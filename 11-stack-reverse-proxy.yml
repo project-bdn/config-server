@@ -28,7 +28,7 @@
     - name: Check if we can access the service
       ansible.builtin.uri:
         url: http://{{ traefik_domain }}
-        follow_redirects: true
+        follow_redirects: safe
         force_basic_auth: true
         user: "{{ traefik_basic_auth_user }}"
         password: "{{ traefik_basic_auth_password }}"
