@@ -1,5 +1,5 @@
 ---
-- name: Setup security packages
+- name: Setup security packages v2
   hosts: all
   become: true
   roles:
