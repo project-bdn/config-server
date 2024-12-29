@@ -22,7 +22,7 @@ The idea is to share the same Ansible configurations here and there.
 Before using Ansible, here are a few things to do:
 
 1. Change the SSH default port. Connect to the serveur and edit the file `/etc/ssh/sshd_config`. There is a commented
-   line `#Port 22`. Change it to `Port 2209` (or something else). Restart `sshd` service: `sudo systemctl restart sshd`.
+   line `#Port 22`. Change it to `Port 2209` (or something else). Restart `sshd` service: `sudo systemctl restart sshd` or `sudo systemctl restart ssh`.
 2. Connect to the server and upload your SSH public key to the default user. We will disable login via password later
    one.
 3. Make sure you can connect via your SSH private key before moving on.
