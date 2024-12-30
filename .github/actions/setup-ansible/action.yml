@@ -26,6 +26,7 @@ runs:
     - name: Setup Ansible and ssh
       shell: bash
       run: |
+        echo "Setting up Ansible"
         set -x
         ansible --version
         cp -a ${GITHUB_ACTION_PATH}/config/* ${{ inputs.working_directory }}  
