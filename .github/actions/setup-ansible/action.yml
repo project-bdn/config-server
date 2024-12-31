@@ -26,7 +26,6 @@ runs:
     - name: Setup Ansible and ssh
       shell: bash
       run: |
-        echo $USER
         echo "Setting up Ansible"
         set -x
         ansible --version
