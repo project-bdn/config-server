@@ -23,6 +23,7 @@ on:
         options:
           - all
           - ovh_manager
+          - ovh_manager_v2
       
       tags:
         description: "Ansible tags used to filter tasks. Example: -t ufw"
