@@ -1,6 +1,6 @@
 ---
 - name: Deploy traefik
-  hosts: ovh_manager
+  hosts: ovh_manager_v2
   vars_files:
     - ./vars/internal-tools.yml
   become: true

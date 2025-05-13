@@ -19,10 +19,10 @@ on:
         description: The target host to run the playbook against. Should be a host in the inventory file
         required: true
         type: choice
-        default: ovh_manager
+        default: ovh_manager_v2
         options:
           - all
-          - ovh_manager
+          - ovh_manager_beta
           - ovh_manager_v2
       
       tags:

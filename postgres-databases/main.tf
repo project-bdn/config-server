@@ -35,3 +35,17 @@ module "klivar_dev" {
   source        = "./klivar-database-and-user"
   instance_name = "dev"
 }
+
+
+module "klivar_play2" {
+  source        = "./klivar-database-and-user"
+  instance_name = "play2"
+}
+
+
+module "klivar_tmp" {
+  source        = "./klivar-database-and-user"
+  instance_name = "tmp"
+}
+
+

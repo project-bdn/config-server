@@ -14,4 +14,15 @@ output "klivar_dev" {
   value     = module.klivar_dev
   sensitive = true
 }
+
+output "klivar_play2" {
+  value     = module.klivar_play2
+  sensitive = true
+}
+ 
+
+output "klivar_tmp" {
+  value     = module.klivar_tmp
+  sensitive = true
+}
  

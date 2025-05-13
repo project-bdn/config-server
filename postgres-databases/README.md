@@ -6,7 +6,7 @@ This Terraform project contains the databases and users used by Klivar.
 
 1. Since the Database is not remotely accessible, we need to set up a port forwarding with SSH to access it. So you need
    SSH access to server. This command creates the port
-   forwarding: `ssh -L 5432:localhost:5432 -p 2209 debian@db-admin.klivar.com -N`. After running this, the remote DB is
+   forwarding: `ssh -L 5432:localhost:5432 -p 2209 debian@db-admin.klivar.com -N` `ssh -L 5432:localhost:5432 -p 2209 ubuntu@db-admin-v2.klivar.com -N`. After running this, the remote DB is
    accessible via `localhost:5432`.
 2. Export an environment variable for the `postgres` superuser. `export PGPASSWORD='xxxxxxx'`
 3. Go into this folder and run `terraform init` to init the project.
@@ -31,7 +31,7 @@ Call the module like this with the name of the database you want
   }
   ```
 - Run `terraform apply` to check the plan. You should see some new resources being added.
-- To get the actual DB name, user and password, run `terraform outpout klivar_new`
+- To get the actual DB name, user and password, run `terraform output klivar_new`
 
 ## How to connect to the database via the CLI
 
