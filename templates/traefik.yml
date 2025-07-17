@@ -105,6 +105,18 @@ services:
         - traefik.http.routers.traefik-public-https.middlewares=admin-auth
         # Define the port inside the Docker service to use
         - traefik.http.services.traefik-public.loadbalancer.server.port=8080
+
+        # modification du 17 -07-2025
+        - --entrypoints.http.forwardedHeaders.trustedIPs=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7,127.0.0.1/32,::1/128
+        - --entrypoints.https.forwardedHeaders.trustedIPs=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7,127.0.0.1/32,::1/128
+        - --entrypoints.http.forwardedHeaders.insecure=false
+        - --entrypoints.https.forwardedHeaders.insecure=false
+
+        - traefik.http.middlewares.real-ip.headers.customrequestheaders.X-Real-IP=
+        - traefik.http.middlewares.real-ip.headers.customrequestheaders.X-Forwarded-For=
+        - traefik.http.middlewares.real-ip.headers.customrequestheaders.X-Forwarded-Proto=
+        - traefik.http.middlewares.real-ip.headers.customrequestheaders.X-Forwarded-Host=
+
     volumes:
       # Add Docker as a mounted volume, so that Traefik can read the labels of other services
       - /var/run/docker.sock:/var/run/docker.sock:ro
