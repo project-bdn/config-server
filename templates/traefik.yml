@@ -141,11 +141,12 @@ services:
   traefik:
     # Use the latest v3.0.x Traefik image available
     image: traefik:v3.0.3
-    ports:
-      # Listen on port 80, default for HTTP, necessary to redirect to HTTPS
-      - "80:80"
-      # Listen on port 443, default for HTTPS
-      - "443:443"
+
+    # MODE HOST : Utilise directement le réseau de l'hôte
+    network_mode: "host"
+    
+    # SUPPRIMÉ : Section ports (inutile avec network_mode: host)
+    
     command: # See https://doc.traefik.io/traefik/reference/static-configuration/cli/ and https://doc.traefik.io/traefik/master/providers/swarm/
       # Enable Docker in Traefik, so that it reads labels from Docker services
       - --providers.docker
@@ -155,23 +156,23 @@ services:
       - --providers.docker.exposedByDefault=false
       # Enable Docker Swarm mode
       - --providers.swarm.endpoint=unix:///var/run/docker.sock
-      # The default network to use when connecting to other containers
+      # MODIFIÉ : Network pour mode host
       - --providers.swarm.network={{ traefik_network }}
 
       # Create an entrypoint "http" listening on port 80
       - --entrypoints.http.address=:80
-      # AJOUT : Configuration des IP pour HTTP
+      # Configuration des IP pour HTTP (renforcée pour mode host)
       - --entrypoints.http.forwardedHeaders.trustedIPs=0.0.0.0/0
-      - --entrypoints.http.forwardedHeaders.insecure=false
+      - --entrypoints.http.forwardedHeaders.insecure=true
       # https://doc.traefik.io/traefik/routing/entrypoints/#respondingtimeouts
       - --entryPoints.http.transport.respondingTimeouts.readTimeout=120
       - --entryPoints.http.transport.respondingTimeouts.idleTimeout=180
       
       # Create an entrypoint "https" listening on port 443
       - --entrypoints.https.address=:443
-      # AJOUT : Configuration des IP pour HTTPS
+      # Configuration des IP pour HTTPS (renforcée pour mode host)
       - --entrypoints.https.forwardedHeaders.trustedIPs=0.0.0.0/0
-      - --entrypoints.https.forwardedHeaders.insecure=false
+      - --entrypoints.https.forwardedHeaders.insecure=true
       - --entryPoints.https.transport.respondingTimeouts.readTimeout=120
       - --entryPoints.https.transport.respondingTimeouts.idleTimeout=180
 
@@ -193,6 +194,7 @@ services:
       # Timeout when connecting to the backends: https://doc.traefik.io/traefik/routing/overview/#transport-configuration
       - --serversTransport.forwardingTimeouts.dialTimeout=60s
       - --serversTransport.forwardingTimeouts.idleConnTimeout=90s
+      
     deploy:
       placement:
         constraints:
@@ -251,9 +253,8 @@ services:
       # Mount the volume to store the certificates
       - traefik-public-certificates:/certificates
 
+    # MODIFIÉ : Networks optionnel avec mode host
     networks:
-      # Use the public network created to be shared between Traefik and
-      # any other service that needs to be publicly available with HTTPS
       - "{{ traefik_network }}"
 
 volumes:
