@@ -63,6 +63,9 @@ services:
       # Timeout when connecting to the backends: https://doc.traefik.io/traefik/routing/overview/#transport-configuration
       - --serversTransport.forwardingTimeouts.dialTimeout=60s
       - --serversTransport.forwardingTimeouts.idleConnTimeout=90s
+
+      - --providers.docker
+      - --providers.docker.constraints=Label(`traefik.constraint-label`, `traefik-public`)
     deploy:
       placement:
         constraints:
