@@ -25,4 +25,11 @@ output "klivar_tmp" {
   value     = module.klivar_tmp
   sensitive = true
 }
+
+ 
+
+output "klivar_tmp_play" {
+  value     = module.klivar_tmp_play
+  sensitive = true
+}
  

@@ -49,3 +49,8 @@ module "klivar_tmp" {
 }
 
 
+module "klivar_tmp_play" {
+  source        = "./klivar-database-and-user"
+  instance_name = "tmp_play"
+}
+
