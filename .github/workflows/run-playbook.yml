@@ -19,11 +19,10 @@ on:
         description: The target host to run the playbook against. Should be a host in the inventory file
         required: true
         type: choice
-        default: ovh_manager_v2
+        default: ovh_manager
         options:
-          - all
-          - ovh_manager_beta
-          - ovh_manager_v2
+          - all 
+          - ovh_manager
       
       tags:
         description: "Ansible tags used to filter tasks. Example: -t ufw"

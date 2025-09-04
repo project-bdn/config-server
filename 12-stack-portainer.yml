@@ -1,6 +1,6 @@
 ---
 - name: Deploy portainer
-  hosts: ovh_manager_v2
+  hosts: ovh_manager
   vars_files:
     - ./vars/internal-tools.yml
   become: true

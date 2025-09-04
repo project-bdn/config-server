@@ -1,6 +1,6 @@
 ---
 - name: Install postgresql
-  hosts: ovh_manager_v2
+  hosts: ovh_manager
   become: true
   pre_tasks:
     - name: PostgreSQL repo
@@ -85,7 +85,7 @@
         - postgresql
 
 - name: Install Pgadmin
-  hosts: ovh_manager_v2
+  hosts: ovh_manager
   vars_files:
     - ./vars/internal-tools.yml
   pre_tasks:
