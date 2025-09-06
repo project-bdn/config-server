@@ -1,6 +1,6 @@
 # Config-server
 
-A set of Ansible playbooks and scripts to configure a server for Klivar.
+A set of Ansible playbooks and scripts to configure a server for dbn.
 
 ## Dependencies and prerequisites
 
@@ -36,13 +36,13 @@ The playbook names usually define the order in which to run them to configuratio
 to servers.
 
 - [01-base.yml](01-base.yml): Security related settings about SSH and some common settings and packages to apply to all
-  servers owned by Klivar.
+  servers owned by dbn.
 - [10-docker.yml](10-docker.yml): Install Docker, init docker Swarm, crontab to prune Docker everyday
 - [11-stack-reverse-proxy.yml](11-stack-reverse-proxy.yml): Install the reverse-proxy (Traefik). The password for the
   user is available in the vault file. See below how to read the vault.
 - [12-stack-portainer.yml](12-stack-portainer.yml): Install portainer. Once installed, you need to access it ASAP to
   set the admin user and password.
-- [13-postgresql.yml](13-postgresql.yml): Install PostgreSQL to be used by the different instances of Klivar. Once
+- [13-postgresql.yml](13-postgresql.yml): Install PostgreSQL to be used by the different instances of dbn. Once
   installed, perform the following actions:
     - Set a password for the default user `postgres` by
       running `sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'new_password';"`. The current password for this
@@ -50,7 +50,7 @@ to servers.
     - Block connection to
       the `postgres` database: `sudo -u postgres psql -c "REVOKE connect ON DATABASE postgres FROM PUBLIC;"`. Only
       the use `postgres` should have to this table.
-    - You need to create the databases and users for instance of Klivar. See the [README](./postgres-databases/README.md)
+    - You need to create the databases and users for instance of dbn. See the [README](./postgres-databases/README.md)
       in the `postgres-databases` folder.
 
 ## How to run a playbook locally
@@ -66,7 +66,9 @@ to servers.
    password.
 4. Run this to test the connection to the serveur `ansible -m setup all`. This command will gather and display some
    metadata for **all** servers in the inventory file.
-5. To run a playbook a specific host (in this case the `ovh_manager`): `ansible-playbook 10-docker.yml ovh_manager`
+5. Installer les rôles requis avec le fichier requirements.yml `ansible-playbook -i inventory.yml requirements.yml`
+6. Spécifier explicitement l'adresse IP `ssh ovh_manager` `docker swarm init --advertise-addr $(ip -4 addr show ens3 | grep inet | awk '{print $2}' | cut -d'/' -f1 | head -1)`
+6. To run a playbook a specific host (in this case the `ovh_manager`): `ansible-playbook 10-docker.yml --limit ovh_manager`
 
 ## How to read the vault
 

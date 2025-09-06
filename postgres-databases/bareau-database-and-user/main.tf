@@ -14,7 +14,7 @@ terraform {
 
 locals {
   # The name used for the role and the db names. NOTE: They should be the same for the authentication to work.
-  name = "klivar_${var.instance_name}"
+  name = "bareau_${var.instance_name}"
 }
 
 resource "random_password" "the_password" {
