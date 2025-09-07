@@ -55,9 +55,9 @@
             task_history_retention_limit: 5
           register: init_swarm_result
 
-        # - name: Swarm init result
-        #  debug:
-        #    msg: "{{ init_swarm_result }}"
+        - name: Swarm init result
+          debug:
+            msg: "{{ init_swarm_result }}"
 
         - name: Install docker_stack module requirements
           ansible.builtin.pip:
