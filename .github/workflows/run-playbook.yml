@@ -1,4 +1,4 @@
-name: Run a playbook
+name: Run a playbook 2
 
 on:
   workflow_dispatch:
