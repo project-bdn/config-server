@@ -73,5 +73,5 @@ resource "postgresql_grant" "revoke_public" {
   ]
 }
 
-# REVOKE connect ON DATABASE klivar_dev FROM PUBLIC;
+ 
 # REVOKE connect ON DATABASE postgres FROM PUBLIC;

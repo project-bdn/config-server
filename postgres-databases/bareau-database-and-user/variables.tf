@@ -1,6 +1,6 @@
 variable "instance_name" {
   type        = string
-  description = "Name of the Klivar instance"
+  description = "Name of the Barreau instance"
 
   validation {
     condition     = can(regex("^[_a-zA-Z][_a-zA-Z0-9]*$", var.instance_name))

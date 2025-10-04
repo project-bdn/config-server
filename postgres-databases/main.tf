@@ -23,4 +23,9 @@ module "bareau_dev" {
   source        = "./bareau-database-and-user"
   instance_name = "dev"
 }
+
+module "barreau_prod" {
+  source        = "./bareau-database-and-user"
+  instance_name = "prod"
+}
  
